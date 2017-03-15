@@ -11,11 +11,17 @@ class ChatController {
 
   onMessage ( message ){
 
-    this.socket.toEveryone().emit('message', message)
+    this.socket.emit('message', message)
   }
 
   disconnected(socket) {
     console.log('disconnected server ' , socket.id )
+  }
+
+  onTyping(message){
+    this.socket.emit('typing', message)
+
+
   }
 
 }

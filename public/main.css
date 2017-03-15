@@ -24,6 +24,8 @@ input {
 
 .chat-message{
     margin-bottom:10px;
+    border-top-left-radius: 1.3em;
+    border-bottom-left-radius: 1.3em;
 
 }
 
@@ -57,6 +59,18 @@ input {
 
 .chat-name-alias{
     color:#3b5998;
+}
+
+.chat-message-sender{
+    float:left;
+    clear:both;
+
+}
+
+.chat-message-receiver{
+    float:right;
+    clear:both;
+    
 
 }
 
