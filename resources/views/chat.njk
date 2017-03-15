@@ -1,0 +1,103 @@
+{%extends 'master' %}
+
+{% block content %}
+
+<div class="chat">
+
+ <input type="text" class="chat-name" placeholder="Enter your name">
+ <div class="chat-messages">
+
+ </div>
+ <textarea placeholder="Type your message"> </textarea>
+ <div class="chat-status">Status:<span class="chat-status-message">Idle</span></div>
+
+</div>
+
+ <script src="https://unpkg.com/adonis-websocket-client/dist/ws.js" charset="utf-8"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+ const io = ws('');
+
+ const client =  io.channel('chat').connect( console.log);
+
+
+</script>
+
+<script>
+ (function(){
+  var getNode = function(s){
+    return document.querySelector(s);
+  }
+  // Get required nodes
+  var status = $('.chat-status .chat-status-message'),
+          textarea = $('.chat textarea'),
+          chatName = $('.chat-name');
+
+  messages = $('.chat-messages');
+
+  var  statusDefault = status.textContent;
+  var setStatus = function(s){
+
+   status.html(s);
+
+  };
+
+   // Listen to Key down
+   console.log("ok");
+
+   textarea.on('keydown' , function( event){
+    if ( status.length ) {
+     console.log( status.html());
+     setStatus("Rachelle is typing");
+    }
+
+    //console.log(status.html());
+    //status.attr('val', "Hello");
+    //setStatus("typing");
+
+
+    var self = this,
+            name = chatName.value;
+
+    if ( event.which === 13 && event.shiftKey === false) {
+
+     var Message = {
+      "name": chatName.val(),
+      "message": self.value
+     };
+     client.emit('message', JSON.stringify(Message));
+     self.value = " " ;
+
+     console.log("Send");
+    }
+
+
+   });
+
+  client.on('message',   function(message){
+   var Message = JSON.parse(message);
+
+   console.log( message);
+   messages.append( outputMessage(Message) );
+
+   console.log("Receive Message");
+
+  });
+
+  function outputMessage( $the_message){
+    return "<div class='chat-message'>"+
+                    "<span class='chat-name-alias'>"+ $the_message.name +": </span>" +
+           "<span class='chat-actual-message'>"+ $the_message.message +" </span>"
+            +"</div>";
+
+  }
+
+
+
+ })();
+</script>
+
+
+{% endblock %}}
