@@ -1,4 +1,4 @@
-{%extends 'master' %}
+<script src="../../public/js/chat.js"></script>{%extends 'master' %}
 
 {% block content %}
 
@@ -23,147 +23,13 @@
  const client =  io.channel('chat').connect( console.log);
 
 
+
 </script>
 
-<script>
- (function(){
-  var getNode = function(s){
-    return document.querySelector(s);
-  }
-  // Get required nodes
-  var status = $('.chat-status .chat-status-message'),
-          textarea = $('.chat textarea'),
-          chatName = $('.chat-name');
+<script src="js/chat.js">    </script>
+<script type="text/javascript">
+ $(document).ready(  Chat.init() );
 
-  messages = $('.chat-messages');
-
-  var  statusDefault = status.textContent;
-
-  var typing = false;
-  var timeout = undefined;
-  var setStatus = function(s){
-
-   status.html(s);
-
-  };
-
-   // Listen to Key down
-   console.log("ok");
-
-   textarea.on('keydown' , function( event){
-
-    // Sending Typing status to recipient
-    if ( status.length ) {
-
-
-     if(typing == false) {
-      typing = true;
-      var Message = {
-       "name": chatName.val(),
-       "message": "typing",
-       "is_typing"  : typing
-      };
-
-
-      client.emit('typing', JSON.stringify(Message));
-      timeout = setTimeout(timeoutFunction, 5000);
-     } else {
-      clearTimeout(timeout);
-      timeout = setTimeout(timeoutFunction, 5000);
-     }
-
-     console.log( status.html());
-
-
-    }
-
-    var self = this,
-            name = chatName.value;
-
-    if ( event.which === 13 && event.shiftKey === false) {
-
-     var Message = {
-      "name": chatName.val(),
-      "message": self.value,
-      "is_typing": false
-     };
-     client.emit('message', JSON.stringify(Message));
-     client.emit('typing', JSON.stringify(Message) );
-     self.value = "" ;
-
-     messages.append( outputMessage(Message) );
-
-     console.log("Send");
-    }
-
-
-   });
-
-  client.on('message',   function(message){
-   var Message = JSON.parse(message);
-
-   console.log( message );
-   messages.append( outputMessage(Message) );
-
-   typing = false;
-
-   console.log("Receive Message");
-
-  });
-
-
-
-
-  function timeoutFunction() {
-   typing = false;
-   client.emit("typing", JSON.stringify({ "is_typing": false}));
-  }
-
-  client.on('typing', function( message){
-   var Message = JSON.parse(message);
-   var typing_status = "Idle";
-
-
-      if (Message.is_typing == true) {
-       console.log("Sender Detech Typing");
-       typing_status = Message.name + " is " + Message.message;
-      } else {
-       typing_status = "Idle";
-      }
-
-
-
-      if ( Message.name !== "") {
-
-      }
-
-      setStatus( typing_status);
-
-  });
-
-  function outputMessage( $the_message){
-   var chat_message_position = "chat-message-sender";
-
-    if ( chatName.val() ==  $the_message.name ) {
-       chat_message_position = " chat-message-receiver";
-    }
-
-
-    return "<div class='chat-message " + chat_message_position + "'>"+
-                    "<span class='chat-name-alias '>"+ $the_message.name +": </span>" +
-           "<span class='chat-actual-message'>"+ $the_message.message +" </span>"
-            +"</div>";
-  }
-
-  function setTypingStatus( message){
-
-
-  }
-
-
-
- })();
 </script>
-
 
 {% endblock %}}
