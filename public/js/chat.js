@@ -102,11 +102,11 @@ var Chat = {
         if ( Chat.config.chatName.val() ==  $the_message.name ) {
             chat_message_position = " chat-message-receiver";
         }
-
-        return "<div class='chat-message " + chat_message_position + "'>"+
-            "<span class='chat-name-alias '>"+ $the_message.name +": </span>" +
-            "<span class='chat-actual-message'>"+ $the_message.message +" </span>"
-            +"</div>";
+        
+        return `<div class="chat-message  ${chat_message_position}  >"
+            <span class='chat-name-alias '> ${$the_message.name} : </span>
+            <span class='chat-actual-message'> ${$the_message.message}  </span>
+            </div>`;
 
     },
 
